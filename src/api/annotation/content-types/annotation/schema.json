@@ -4,24 +4,39 @@
   "info": {
     "singularName": "annotation",
     "pluralName": "annotations",
-    "displayName": "Annotation"
+    "displayName": "Annotation",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
-    "text": {
+    "content": {
       "type": "text",
       "required": true
     },
-    "uri": {
+    "targetText": {
+      "type": "text",
+      "required": true
+    },
+    "startOffset": {
+      "type": "integer",
+      "required": true
+    },
+    "length": {
+      "type": "integer",
+      "required": true
+    },
+    "blockID": {
       "type": "string",
       "required": true
     },
-    "quote": {
-      "type": "text",
-      "required": true
+    "story": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::story.story",
+      "inversedBy": "annotations"
     }
   }
 }

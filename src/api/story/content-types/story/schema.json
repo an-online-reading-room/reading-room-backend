@@ -79,6 +79,12 @@
       "type": "text",
       "required": true,
       "maxLength": 400
+    },
+    "annotations": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::annotation.annotation",
+      "mappedBy": "story"
     }
   }
 }
