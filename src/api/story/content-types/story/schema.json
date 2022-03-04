@@ -85,6 +85,18 @@
       "relation": "oneToMany",
       "target": "api::annotation.annotation",
       "mappedBy": "story"
+    },
+    "annotationCanvas": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     }
   }
 }
