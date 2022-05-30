@@ -34,31 +34,10 @@
       "type": "string",
       "required": true
     },
-    "media": {
-      "type": "media",
-      "multiple": true,
-      "required": false,
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos"
-      ],
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
     "categories": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::category.category",
-      "inversedBy": "stories"
-    },
-    "author": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::author.author",
       "inversedBy": "stories"
     },
     "submission": {
@@ -79,25 +58,6 @@
       "type": "text",
       "required": true,
       "maxLength": 400
-    },
-    "annotations": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::annotation.annotation",
-      "mappedBy": "story"
-    },
-    "annotationCanvas": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": [
-        "images"
-      ],
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
     },
     "users_permissions_user": {
       "type": "relation",

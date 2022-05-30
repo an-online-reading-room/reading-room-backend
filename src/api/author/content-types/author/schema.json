@@ -43,12 +43,6 @@
       },
       "type": "text"
     },
-    "stories": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::story.story",
-      "mappedBy": "author"
-    },
     "name": {
       "pluginOptions": {
         "i18n": {
