@@ -49,12 +49,6 @@
         }
       }
     },
-    "author": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::author.author",
-      "inversedBy": "stories"
-    },
     "submission": {
       "pluginOptions": {
         "i18n": {
@@ -74,11 +68,11 @@
       "required": true,
       "maxLength": 400
     },
-    "annotations": {
+    "users_permissions_user": {
       "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::annotation.annotation",
-      "mappedBy": "story"
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "stories"
     },
     "annotationCanvas": {
       "type": "media",
