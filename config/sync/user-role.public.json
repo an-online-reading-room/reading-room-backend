@@ -1,0 +1,40 @@
+{
+  "name": "Public",
+  "description": "Default role given to unauthenticated user.",
+  "type": "public",
+  "permissions": [
+    {
+      "action": "api::author.author.find"
+    },
+    {
+      "action": "api::author.author.findOne"
+    },
+    {
+      "action": "api::category.category.find"
+    },
+    {
+      "action": "api::category.category.findOne"
+    },
+    {
+      "action": "api::story.story.find"
+    },
+    {
+      "action": "api::story.story.findOne"
+    },
+    {
+      "action": "plugin::passwordless.auth.login"
+    },
+    {
+      "action": "plugin::passwordless.auth.sendLink"
+    },
+    {
+      "action": "plugin::users-permissions.user.find"
+    },
+    {
+      "action": "plugin::users-permissions.user.findOne"
+    },
+    {
+      "action": "plugin::users-permissions.user.me"
+    }
+  ]
+}

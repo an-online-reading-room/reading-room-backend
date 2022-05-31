@@ -1,0 +1,43 @@
+{
+  "name": "Authenticated",
+  "description": "Default role given to authenticated user.",
+  "type": "authenticated",
+  "permissions": [
+    {
+      "action": "api::story.story.create"
+    },
+    {
+      "action": "api::story.story.delete"
+    },
+    {
+      "action": "api::story.story.find"
+    },
+    {
+      "action": "api::story.story.findOne"
+    },
+    {
+      "action": "api::story.story.update"
+    },
+    {
+      "action": "plugin::upload.content-api.count"
+    },
+    {
+      "action": "plugin::upload.content-api.find"
+    },
+    {
+      "action": "plugin::upload.content-api.findOne"
+    },
+    {
+      "action": "plugin::upload.content-api.upload"
+    },
+    {
+      "action": "plugin::users-permissions.user.find"
+    },
+    {
+      "action": "plugin::users-permissions.user.findOne"
+    },
+    {
+      "action": "plugin::users-permissions.user.me"
+    }
+  ]
+}
