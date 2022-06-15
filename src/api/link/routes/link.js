@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * annotation router.
+ * link router.
  */
 
 const { createCoreRouter } = require('@strapi/strapi').factories;
 
-module.exports = createCoreRouter('api::annotation.annotation');
+module.exports = createCoreRouter('api::link.link');

@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * annotation service.
+ * link service.
  */
 
 const { createCoreService } = require('@strapi/strapi').factories;
 
-module.exports = createCoreService('api::annotation.annotation');
+module.exports = createCoreService('api::link.link');
