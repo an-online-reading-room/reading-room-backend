@@ -17,9 +17,8 @@ module.exports = plugin => {
             { 
                 populate: {
                 stories: {
-                        fields: ['id','slug','title','location','description']
+                        fields: ['id','slug','title','location','description','publishedAt']
                     }
-
                 }
             }   
         );

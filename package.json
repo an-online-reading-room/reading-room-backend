@@ -19,6 +19,7 @@
     "dotenv": "^16.0.1",
     "pg": "^8.7.1",
     "pg-connection-string": "^2.5.0",
+    "strapi-plugin-config-sync": "^1.0.1",
     "strapi-plugin-passwordless": "^4.0.7"
   },
   "author": {

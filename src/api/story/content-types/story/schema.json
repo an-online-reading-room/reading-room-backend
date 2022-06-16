@@ -95,6 +95,14 @@
       },
       "type": "uid",
       "targetField": "title"
+    },
+    "draft": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "json"
     }
   }
 }
