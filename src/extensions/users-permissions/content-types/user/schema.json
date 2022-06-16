@@ -71,6 +71,12 @@
     },
     "visited": {
       "type": "json"
+    },
+    "links": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::link.link",
+      "mappedBy": "user"
     }
   }
 }

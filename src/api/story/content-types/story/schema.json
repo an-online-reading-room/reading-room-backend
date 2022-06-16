@@ -74,19 +74,6 @@
       "target": "plugin::users-permissions.user",
       "inversedBy": "stories"
     },
-    "annotationCanvas": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": [
-        "images"
-      ],
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
     "slug": {
       "pluginOptions": {
         "i18n": {
@@ -103,6 +90,18 @@
         }
       },
       "type": "json"
+    },
+    "targetLinks": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::link.link",
+      "mappedBy": "target"
+    },
+    "sourceLinks": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::link.link",
+      "mappedBy": "source"
     }
   }
 }
