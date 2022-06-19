@@ -77,6 +77,12 @@
       "relation": "oneToMany",
       "target": "api::link.link",
       "mappedBy": "user"
+    },
+    "maps": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::map.map",
+      "mappedBy": "user"
     }
   }
 }
