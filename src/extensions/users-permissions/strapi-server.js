@@ -16,10 +16,22 @@ module.exports = plugin => {
             ctx.state.user.id,
             { 
                 populate: {
-                stories: {
+                    stories: {
                         fields: ['id','slug','title','location','description','publishedAt']
+                    },
+                    maps: {
+                        
+                        filters: {
+                            title: {
+                                $eq: null,
+                            },
+                            type: {
+                                $eq: "lite"
+                            }
+                        }
                     }
-                }
+                },
+                
             }   
         );
 
