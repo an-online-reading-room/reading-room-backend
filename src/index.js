@@ -16,5 +16,23 @@ module.exports = {
    * This gives you an opportunity to set up your data model,
    * run jobs, or perform some special logic.
    */
-  bootstrap(/*{ strapi }*/) {},
+  bootstrap(/*{ strapi }*/) {
+    strapi.db.lifecycles.subscribe({
+      models: ['plugin::users-permissions.user'],
+
+      // your lifecycle hooks
+      async afterCreate(event) {
+        
+        const id = event.result.id
+
+        const defaultMap = await strapi.db.query('api::map.map').create({
+          data: {
+            type: "lite",
+            user: id 
+          }
+        })
+        
+      },
+    })
+  },
 };
