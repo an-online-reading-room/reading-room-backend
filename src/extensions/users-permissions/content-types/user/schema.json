@@ -69,9 +69,6 @@
       "target": "api::story.story",
       "mappedBy": "users_permissions_user"
     },
-    "visited": {
-      "type": "json"
-    },
     "links": {
       "type": "relation",
       "relation": "oneToMany",
