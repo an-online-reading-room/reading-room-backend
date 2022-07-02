@@ -10,7 +10,6 @@ module.exports = plugin => {
 
     const stories = async (ctx) => {
 
-        console.log("have I hit the action")
         if (!ctx.state.user) {
             return ctx.unauthorized();
         }
@@ -41,7 +40,6 @@ module.exports = plugin => {
     plugin.routes['content-api'].routes.splice(10, 0, userStoriesRoute);
     plugin.controllers.user['stories'] = stories;
 
-    console.log(plugin.controllers)
 
     plugin.controllers.user.me = async (ctx) => {
         if (!ctx.state.user) {
