@@ -10136,10 +10136,10 @@ strapi-plugin-config-sync@^1.0.1:
     redux-immutable "^4.0.0"
     redux-thunk "^2.3.0"
 
-strapi-plugin-passwordless@^4.0.7:
-  version "4.0.7"
-  resolved "https://registry.yarnpkg.com/strapi-plugin-passwordless/-/strapi-plugin-passwordless-4.0.7.tgz#2609205b22daa3e2ea0b9391eb7816e4262c4762"
-  integrity sha512-Ar5FB0Ezr24hR0eesY0f+vfg7os7Q9t8b4DzjgYBRyzRVYTHmtRpcOLUYF4cvDvWQ0DK9wVTy3VflZqx4OI12A==
+strapi-plugin-passwordless@^4.0.8:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/strapi-plugin-passwordless/-/strapi-plugin-passwordless-4.0.8.tgz#36c2d484243b65788907e251c153258ae2325312"
+  integrity sha512-irqUK/hsXNBGCRobfzsBWc6kXS17esx5CO1Jpf3TuOZmqe0TYsu/W4Wd8p7QXYFqnz+XAMKb49ISjViSgFazaw==
   dependencies:
     nanoid "^3.3.4"
 
