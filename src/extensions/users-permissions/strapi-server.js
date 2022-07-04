@@ -9,11 +9,9 @@ module.exports = plugin => {
     };
 
     const stories = async (ctx) => {
-
         if (!ctx.state.user) {
             return ctx.unauthorized();
         }
-
         const user = await strapi.entityService.findOne(
             'plugin::users-permissions.user',
             ctx.state.user.id,
@@ -26,8 +24,6 @@ module.exports = plugin => {
             }
         );
         ctx.body = sanitizeOutput(user);
-        //return;
-        //console.log(ctx.state.user)
     }
 
     const userStoriesRoute = {
@@ -39,7 +35,6 @@ module.exports = plugin => {
 
     plugin.routes['content-api'].routes.splice(10, 0, userStoriesRoute);
     plugin.controllers.user['stories'] = stories;
-
 
     plugin.controllers.user.me = async (ctx) => {
         if (!ctx.state.user) {
