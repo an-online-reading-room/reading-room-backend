@@ -1,12 +1,11 @@
+
 const { sanitize } = require('@strapi/utils');
+const _ = require("lodash");
+const emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 module.exports = plugin => {
-    strapi.log.info("DBG: My plugin extension getting picked up")
-    //console.log(plugin)
-    const ogServices = plugin.services.passwordless;
 
     async function createUser(user) {
-        //const userSettings = await this.userSettings();
         const role = await strapi
             .query('plugin::users-permissions.role')
             .findOne({
@@ -32,60 +31,57 @@ module.exports = plugin => {
         return await sanitize.sanitizers.defaultSanitizeOutput(userSchema, user);
     }
 
-    plugin.services.passwordless = ({ strapi }) => {
-        return {
-            ...ogServices({ strapi }),
+    plugin.controllers.auth.sendLink = async (ctx) => {
+        const { passwordless } = strapi.plugins['passwordless'].services;
 
-            user: async (email, username) => {
-                // return new value
-                strapi.log.info("DBG: My plugin service user getting picked up")
+        const isEnabled = await passwordless.isEnabled();
 
-                if (email && username) {
+        if (!isEnabled) {
+            return ctx.badRequest('plugin.disabled');
+        }
 
-                    const userByEmail = await fetchUser({ email })
-                    const userByUsername = await fetchUser({ username });
+        const params = _.assign(ctx.request.body);
 
-                    if (userByEmail.id == userByUsername.id) {
-                        return userByEmail;
-                    }
-                    if (userByEmail) {
-                        console.log("Email already associated with another account")
-                        console.log(userByEmail.id)
-                        return false;
-                    }
-                    if (userByUsername) {
-                        console.log("Username not available")
-                        console.log(userByUsername.id)
-                        return false;
-                    }
-                    return createUser({ email, username })
+        const email = params.email ? params.email.trim().toLowerCase() : null;
+        const context = params.context || {};
+        const username = params.username || null;
 
-                } else if (email && !username) {
-                    const userByEmail = await fetchUser({ email })
-                    if (user) {
-                        return user;
-                    } else {
-                        console.log("Account doesn't exist")
-                        return false;
-                    }
-                }
-                //const user = email ? await fetchUser({ email }) : null;
-                //console.log(user)
-                /*if (user) {
-                    return user;
-                }
-                const userByUsername = username ? await fetchUser({ username }) : null;
-                if (userByUsername) {
-                    return userByUsername
-                }
-                if (email && username) {
-                    //console.log("are we hitting this")
-                    return createUser({ email, username })
-                }
-                */
-                return false;
-            },
+        if (email && !emailRegExp.test(email)) {
+            return ctx.badRequest('Invalid Email');
+        }
 
+        let user;
+        const userByEmail = await fetchUser({ email })
+
+        if (email && !username) {
+            if (userByEmail) {
+                user = userByEmail
+            } else {
+                return ctx.badRequest("Please signup to continue")
+            }
+        } else if (email && username) {
+            const userByUsername = await fetchUser({ username })
+            if (userByEmail && userByUsername && (userByEmail.id == userByUsername.id)) {
+                user = userByUsername;
+            } else if (userByEmail || userByUsername) {
+                return ctx.badRequest('Email or username already taken')
+            } else {
+                user = await createUser({ email, username })
+            }
+        } else {
+            return ctx.badRequest("Unknown Error")
+        }
+
+        try {
+            const token = await passwordless.createToken(user.email, context);
+            await passwordless.sendLoginLink(token);
+            ctx.send({
+                email,
+                username,
+                sent: true,
+            });
+        } catch (err) {
+            return ctx.badRequest(err);
         }
     }
 
