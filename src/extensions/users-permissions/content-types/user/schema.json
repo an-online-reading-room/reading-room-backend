@@ -63,12 +63,6 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "stories": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::story.story",
-      "mappedBy": "users_permissions_user"
-    },
     "links": {
       "type": "relation",
       "relation": "oneToMany",
@@ -79,6 +73,12 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::map.map",
+      "mappedBy": "user"
+    },
+    "stories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::story.story",
       "mappedBy": "user"
     }
   }

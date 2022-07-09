@@ -68,7 +68,7 @@
       "required": true,
       "maxLength": 400
     },
-    "users_permissions_user": {
+    "user": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
