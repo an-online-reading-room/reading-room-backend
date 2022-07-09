@@ -102,6 +102,15 @@
       "relation": "oneToMany",
       "target": "api::link.link",
       "mappedBy": "source"
+    },
+    "hasDraft": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "boolean",
+      "default": false
     }
   }
 }
