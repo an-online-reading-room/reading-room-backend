@@ -15,12 +15,11 @@ module.exports = createCoreService('api::story.story', ({ strapi }) => ({
       const knex = strapi.db.connection
       
       const record = await knex
-      .select('id', 'title', 'slug', 'location', 'description', 'submission', 'published_at as publishedAt')
       .from('stories')
+      .select('slug')
+      .whereNotNull('published_at')
       .orderByRaw('random()')
       .limit(1)
-
-      console.log()
 
       console.log(`random() record: ${record[0].id}`)
 
