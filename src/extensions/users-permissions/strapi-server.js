@@ -26,6 +26,23 @@ module.exports = plugin => {
         ctx.body = sanitizeOutput(user);
     }
 
+    const update = async (ctx) => {
+        if (!ctx.state.user) {
+            return ctx.unauthorized();
+        }
+        console.log(ctx.request.body)
+        const {email, username } = ctx.request.body;
+        const user = await strapi.entityService.update(
+            'plugin::users-permissions.user',
+            ctx.state.user.id,
+            {
+                data : {
+                    email, username
+                }
+            }
+        );
+        ctx.body = sanitizeOutput(user);
+    }
     const userStoriesRoute = {
         method: 'GET',
         path: '/users/stories',
@@ -33,8 +50,19 @@ module.exports = plugin => {
         config: { prefix: '' }
     }
 
+    const updateUserRoute = {
+        method: 'PUT',
+        path: '/users/update',
+        handler: 'user.update',
+        config: { prefix: '' }
+    }
+
     plugin.routes['content-api'].routes.splice(10, 0, userStoriesRoute);
+    plugin.routes['content-api'].routes.splice(10, 0, updateUserRoute);
+
     plugin.controllers.user['stories'] = stories;
+    plugin.controllers.user['update'] = update;
+
 
     plugin.controllers.user.me = async (ctx) => {
         if (!ctx.state.user) {
