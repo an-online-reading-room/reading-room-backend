@@ -7,11 +7,15 @@ module.exports = plugin => {
         } = user; // be careful, you need to omit other private attributes yourself
         return sanitizedUser;
     };
+    const fetchUser = async (data) => {
+        return await strapi.query('plugin::users-permissions.user').findOne({ where: data })
+    }
 
     const stories = async (ctx) => {
         if (!ctx.state.user) {
             return ctx.unauthorized();
         }
+
         const user = await strapi.entityService.findOne(
             'plugin::users-permissions.user',
             ctx.state.user.id,
@@ -26,22 +30,36 @@ module.exports = plugin => {
         ctx.body = sanitizeOutput(user);
     }
 
-    const update = async (ctx) => {
+    const updateMe = async (ctx) => {
         if (!ctx.state.user) {
             return ctx.unauthorized();
         }
-        console.log(ctx.request.body)
-        const {email, username } = ctx.request.body;
-        const user = await strapi.entityService.update(
+        const { email, username } = ctx.request.body;
+
+        if (username) {
+            const user = await fetchUser({ username })
+
+            if (user) {
+                return ctx.badRequest("Username already exists")
+            }
+        } else if (email) {
+            const user = await fetchUser({ email })
+            if (user) {
+                return ctx.badRequest("Email already exists")
+            }
+        }
+
+        //console.log(ctx.request.body)
+        const newuser = await strapi.entityService.update(
             'plugin::users-permissions.user',
             ctx.state.user.id,
             {
-                data : {
+                data: {
                     email, username
                 }
             }
         );
-        ctx.body = sanitizeOutput(user);
+        ctx.body = sanitizeOutput(newuser);
     }
     const userStoriesRoute = {
         method: 'GET',
@@ -53,7 +71,7 @@ module.exports = plugin => {
     const updateUserRoute = {
         method: 'PUT',
         path: '/users/update',
-        handler: 'user.update',
+        handler: 'user.updateMe',
         config: { prefix: '' }
     }
 
@@ -61,7 +79,7 @@ module.exports = plugin => {
     plugin.routes['content-api'].routes.splice(10, 0, updateUserRoute);
 
     plugin.controllers.user['stories'] = stories;
-    plugin.controllers.user['update'] = update;
+    plugin.controllers.user['updateMe'] = updateMe;
 
 
     plugin.controllers.user.me = async (ctx) => {
