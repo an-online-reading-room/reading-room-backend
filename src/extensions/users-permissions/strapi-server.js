@@ -11,11 +11,11 @@ module.exports = plugin => {
         return await strapi.query('plugin::users-permissions.user').findOne({ where: data })
     }
 
+    /** Controllers **/
     const stories = async (ctx) => {
         if (!ctx.state.user) {
             return ctx.unauthorized();
         }
-
         const user = await strapi.entityService.findOne(
             'plugin::users-permissions.user',
             ctx.state.user.id,
@@ -30,12 +30,29 @@ module.exports = plugin => {
         ctx.body = sanitizeOutput(user);
     }
 
+    const bookmarks = async (ctx) => {
+        if (!ctx.state.user) {
+            return ctx.unauthorized();
+        }
+        const user = await strapi.entityService.findOne(
+            'plugin::users-permissions.user',
+            ctx.state.user.id,
+            {
+                populate: {
+                    bookmarks: {
+                        fields: ['id', 'slug', 'title', 'location', 'description']
+                    },
+                },
+            }
+        );
+        ctx.body = sanitizeOutput(user);
+    }
+
     const updateMe = async (ctx) => {
         if (!ctx.state.user) {
             return ctx.unauthorized();
         }
         const { email, username } = ctx.request.body;
-
         if (username) {
             const user = await fetchUser({ username })
 
@@ -48,8 +65,6 @@ module.exports = plugin => {
                 return ctx.badRequest("Email already exists")
             }
         }
-
-        //console.log(ctx.request.body)
         const newuser = await strapi.entityService.update(
             'plugin::users-permissions.user',
             ctx.state.user.id,
@@ -61,6 +76,8 @@ module.exports = plugin => {
         );
         ctx.body = sanitizeOutput(newuser);
     }
+
+    /** New User routes **/
     const userStoriesRoute = {
         method: 'GET',
         path: '/users/stories',
@@ -74,14 +91,24 @@ module.exports = plugin => {
         handler: 'user.updateMe',
         config: { prefix: '' }
     }
+    const userBookmarksRoute = {
+        method: 'GET',
+        path: '/users/bookmarks',
+        handler: 'user.bookmarks',
+        config: { prefix: '' }
+    }
 
+    /** Add new routes and controllers to user **/
     plugin.routes['content-api'].routes.splice(10, 0, userStoriesRoute);
     plugin.routes['content-api'].routes.splice(10, 0, updateUserRoute);
+    plugin.routes['content-api'].routes.splice(10, 0, userBookmarksRoute);
 
     plugin.controllers.user['stories'] = stories;
     plugin.controllers.user['updateMe'] = updateMe;
+    plugin.controllers.user['bookmarks'] = bookmarks;
 
 
+    /** Extend user/me controller */
     plugin.controllers.user.me = async (ctx) => {
         if (!ctx.state.user) {
             return ctx.unauthorized();
