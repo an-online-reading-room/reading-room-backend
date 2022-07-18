@@ -48,6 +48,35 @@ module.exports = plugin => {
         ctx.body = sanitizeOutput(user);
     }
 
+    const bookmarkupdate = async (ctx) => {
+        if (!ctx.state.user) {
+            return ctx.unauthorized();
+        }
+        const {bookmarks} = await strapi.entityService.findOne(
+            'plugin::users-permissions.user',
+            ctx.state.user.id,
+            {
+                populate: {
+                    bookmarks: {
+                        fields: ['id']
+                    },
+                },
+            }
+        );
+        console.log(ctx.body.data)
+        console.log(bookmarks)
+        const user = await strapi.entityService.update(
+            'plugin::users-permissions.user',
+            ctx.state.user.id,
+            {
+                data: {
+                    bookmarks
+                }
+            }
+        )
+        ctx.body = sanitizeOutput(user);
+    }
+
     const updateMe = async (ctx) => {
         if (!ctx.state.user) {
             return ctx.unauthorized();
@@ -97,15 +126,23 @@ module.exports = plugin => {
         handler: 'user.bookmarks',
         config: { prefix: '' }
     }
+    const userBookmarksUpdateRoute = {
+        method: 'PUT',
+        path: '/users/bookmarks',
+        handler: 'user.bookmarkupdate',
+        config: { prefix: '' }
+    }
 
     /** Add new routes and controllers to user **/
     plugin.routes['content-api'].routes.splice(10, 0, userStoriesRoute);
     plugin.routes['content-api'].routes.splice(10, 0, updateUserRoute);
     plugin.routes['content-api'].routes.splice(10, 0, userBookmarksRoute);
+    plugin.routes['content-api'].routes.splice(10, 0, userBookmarksUpdateRoute);
 
     plugin.controllers.user['stories'] = stories;
     plugin.controllers.user['updateMe'] = updateMe;
     plugin.controllers.user['bookmarks'] = bookmarks;
+    plugin.controllers.user['bookmarkupdate'] = bookmarkupdate;
 
 
     /** Extend user/me controller */
