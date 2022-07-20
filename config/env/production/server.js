@@ -1,3 +1,7 @@
 module.exports = ({ env }) => ({
-  host: "0.0.0.0",
+  proxy: true,
+  url: env('APP_URL'), // replaces `host` and `port` properties in the development environment
+  app: { 
+    keys: env.array('APP_KEYS')
+  },
 });
