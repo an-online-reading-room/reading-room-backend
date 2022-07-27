@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_collaborator_contacts",
+  "info": {
+    "displayName": "Contact",
+    "icon": "external-link-alt"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "enumeration",
+      "enum": [
+        "instagram",
+        "email",
+        "twitter",
+        "website"
+      ],
+      "required": true
+    },
+    "value": {
+      "type": "string",
+      "required": true
+    }
+  }
+}
