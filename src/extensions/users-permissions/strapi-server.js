@@ -7,6 +7,11 @@ module.exports = plugin => {
         } = user; // be careful, you need to omit other private attributes yourself
         return sanitizedUser;
     };
+
+    const isEmpty = (obj) => {
+        return Object.keys(obj).length === 0;
+    }
+
     const fetchUser = async (data) => {
         return await strapi.query('plugin::users-permissions.user').findOne({ where: data })
     }
@@ -45,14 +50,28 @@ module.exports = plugin => {
                 },
             }
         );
-        ctx.body = sanitizeOutput(user);
+
+        let bookmarked = false;
+        if (!isEmpty(ctx.request.query)) {
+            user.bookmarks.forEach(element => {
+                if (ctx.request.query.id == element.id) {
+                    bookmarked = true;
+                }
+            })
+            ctx.send({ bookmarked })
+        }
+        else {
+            ctx.send({
+                bookmarks: user.bookmarks
+            })
+        }
     }
 
     const bookmarkupdate = async (ctx) => {
         if (!ctx.state.user) {
             return ctx.unauthorized();
         }
-        const {bookmarks} = await strapi.entityService.findOne(
+        const { bookmarks } = await strapi.entityService.findOne(
             'plugin::users-permissions.user',
             ctx.state.user.id,
             {
@@ -63,8 +82,15 @@ module.exports = plugin => {
                 },
             }
         );
-        console.log(ctx.body.data)
-        console.log(bookmarks)
+        if (ctx.request.body.operation === "add") {
+            bookmarks.push(ctx.request.body.data)
+        } else if (ctx.request.body.operation === "remove") {
+            let index = bookmarks.findIndex((element) => {
+                return (element.id === ctx.request.body.id)
+
+            })
+            bookmarks.splice(index, 1)
+        }
         const user = await strapi.entityService.update(
             'plugin::users-permissions.user',
             ctx.state.user.id,
