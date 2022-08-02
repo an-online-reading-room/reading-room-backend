@@ -1,0 +1,21 @@
+name: "Staging Environment"
+
+on: 
+  push:
+    branches: 
+      - v2/staging
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    
+    steps:
+      - name: Checkout staging branch
+        uses: actions/checkout@v2 
+
+      - name: Install dependencies
+        run: npm ci 
+      
+      - name: Build application
+        run: npm run build
+
