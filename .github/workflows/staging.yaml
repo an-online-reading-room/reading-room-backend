@@ -23,14 +23,6 @@ jobs:
         run: rm -rf node_modules && yarn install --frozen-lockfile
       
       - name: Build application
-        env:
-          ADMIN_JWT_SECRET: ${{ secrets.ADMIN_JWT_SECRET }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          API_TOKEN_SALT: ${{ secrets.API_TOKEN_SALT }}
-          SMTP_HOST: ${{ secrets.SMTP_HOST }}
-          SMTP_PORT: ${{ secrets.SMTP_PORT }}
-          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
-          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
         run: npm run build
 
       - name: Restart server app
